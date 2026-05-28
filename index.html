@@ -110,7 +110,7 @@
 
     .navBtn {
       position: absolute;
-      z-index: 50;
+      z-index: 999;
       border: none;
       cursor: pointer;
       background: transparent;
@@ -121,7 +121,12 @@
     .navBtn:hover { transform: scale(1.05); }
     .navBtn img { width: 100%; display: block; }
 
-    .startBtn { width: 35%; left: 33%; bottom: 9%; animation: pulse 1.5s infinite; }
+    .startBtn { 
+      width: 35%; 
+      left: 33%; 
+      bottom: 16%; 
+      animation: pulse 1.5s infinite; 
+    }
     @keyframes pulse {
       0%,100% { transform: scale(1); }
       50% { transform: scale(1.04); }
