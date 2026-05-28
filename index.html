@@ -57,7 +57,6 @@
       z-index: 10;
     }
     .hotspot:hover { filter: drop-shadow(0 0 10px #fff3a5); }
-    /* 只有当具有 active 类（即草莓）时，悬浮才有虚线框动画提示 */
     .hotspot.active:hover::after {
       content: "";
       position: absolute;
@@ -80,33 +79,37 @@
     .asset:hover { transform: scale(1.07); }
     .used { opacity: 0; pointer-events: none; transform: scale(.55); }
 
+    /* 全新重构的宽大对话框，保证文字完美包裹在框内 */
     .dialog {
       position: absolute;
-      left: 7.4%;
-      bottom: 8.4%;
-      width: 28%;
-      min-height: 9.2%;
+      left: 24%;
+      bottom: 40%;
+      width: 48%;
+      min-height: 18%;
       z-index: 40;
       background-image: url("images/dialog.png");
       background-size: 100% 100%;
+      background-repeat: no-repeat;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.2% 2.1%;
+      padding: 2% 4%;
       color: #2b1609;
-      font-size: clamp(13px, 1.45vw, 25px);
-      line-height: 1.55;
+      font-size: clamp(14px, 1.5vw, 24px);
+      font-weight: bold;
+      line-height: 1.5;
       text-align: center;
       white-space: pre-line;
       text-shadow: 0 1px #fff6df;
     }
 
+    /* 欢迎居中框 */
     .center-dialog {
-      left: 28%;
-      bottom: 45%;
-      width: 37%;
-      min-height: 12%;
-      font-size: clamp(16px, 1.55vw, 28px);
+      left: 24%;
+      bottom: 40%;
+      width: 48%;
+      min-height: 20%;
     }
 
     .navBtn {
@@ -129,7 +132,7 @@
     }
 
     .nextBtn { width: 22%; right: 5.5%; bottom: 4.5%; }
-    .sendBtn { width: 22%; left: 54%; bottom: 16%; }
+    .sendBtn { width: 22%; left: 39%; bottom: 12%; }
 
     .sparkle {
       position: absolute;
@@ -347,17 +350,16 @@
       });
     }
 
-    // 地图页面：这里执行了彻底限制
     function map() {
       transition(() => {
         clearAll();
         setBg(A.map);
         
-        // 1. 唯一能点击并且拥有悬浮动态框的：草莓森林
+        // 只有草莓森林可以点击进入
         const hb = addHotspot({left:'30%', top:'20%', width:'19%', height:'22%'}, () => collect('strawberry'), '草莓森林');
-        hb.classList.add('active'); // 只允许草莓显示框
+        hb.classList.add('active');
 
-        // 2. 其它地点配置拦截，点击弹窗提示，不给于任何跳转权限
+        // 其他地点全部拦截
         addHotspot({left:'64%', top:'18%', width:'20%', height:'24%'}, () => showTip('请先前往草莓森林冒险哦！'), '牛奶牧场');
         addHotspot({left:'12%', top:'57%', width:'20%', height:'23%'}, () => showTip('请先前往草莓森林冒险哦！'), '面粉小镇');
         addHotspot({left:'35%', top:'55%', width:'21%', height:'25%'}, () => showTip('请先前往草莓森林冒险哦！'), '巧克力山洞');
@@ -366,7 +368,6 @@
       });
     }
 
-    // 绝对单向流：草莓 -> 牛奶 -> 面粉 -> 巧克力 -> 全收集界面 -> 进入厨房
     function collect(type) {
       const data = {
         strawberry: {
@@ -401,12 +402,6 @@
         addHotspot(data.click, () => {
           if (state.items[type]) { showTip(data.repeat); return; }
           state.items[type] = true;
-          // 彻底同步原工程的背面逻辑数据，保障 allCollected() 能校验通过
-          if(type === 'strawberry') state.items.strawberry = true;
-          if(type === 'milk') state.items.milk = true;
-          if(type === 'flour') state.items.flour = true;
-          if(type === 'choco') state.items.choco = true;
-
           setBg(data.done);
           showTip(data.msg);
           sparkleBurst();
@@ -429,7 +424,7 @@
       transition(() => {
         clearAll();
         setBg(A.kitchenBase);
-        showDialog(`欢迎来到小羊厨房\n让我们一起做出美味蛋糕吧！！`, true);
+        showDialog(`欢迎来到小羊厨房\n让我们一起做出美味蛋糕吧！！\n\n(点击屏幕任意地方开始制作蛋糕胚)`);
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext, '继续');
       });
     }
@@ -439,61 +434,96 @@
       renderKitchen();
     }
 
-    // 完美复刻原稿 index.txt 中 1 到 10 步的所有小羊厨房渲染分支逻辑
+    // 完美对齐图四横排坐标的厨房系统
     function renderKitchen() {
       clearAll();
       setBg(A.kitchenBase);
       const s = state.kitchenStep;
 
+      // 食材在粉色格纹野餐垫上的一字排开统一高度
+      const itemTop = '60%'; 
+
       if (s === 1) {
-        showDialog(`第一步\n先用面粉做出蛋糕胚吧`, true);
+        showDialog(`第一步\n先用面粉做出蛋糕胚吧`);
+        // 预先整齐摆放全部食材
+        addAsset(A.egg, {left:'11%', top:itemTop, width:'8%'});
+        addAsset(A.milkItem, {left:'22%', top:itemTop, width:'6%'});
+        addAsset(A.bowl, {left:'31%', top:itemTop, width:'10%'});
+        addAsset(A.plate, {left:'44%', top:itemTop, width:'11%'});
+        addAsset(A.flourItem, {left:'58%', top:itemTop, width:'8%'});
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
+        addAsset(A.chocoItem, {left:'82%', top:itemTop, width:'8%'});
+
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 2) {
         showDialog('点击面粉');
-        addAsset(A.flourItem, {left:'43%', top:'55%', width:'9%'}, () => kitchenNext(), 'clickable-note');
-        addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, () => showTip('要先点面粉哦～'));
+        addAsset(A.egg, {left:'11%', top:itemTop, width:'8%'});
+        addAsset(A.milkItem, {left:'22%', top:itemTop, width:'6%'});
+        addAsset(A.bowl, {left:'31%', top:itemTop, width:'10%'});
+        addAsset(A.plate, {left:'44%', top:itemTop, width:'11%'});
+        addAsset(A.flourItem, {left:'58%', top:itemTop, width:'8%'}, () => kitchenNext(), 'clickable-note');
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
+        addAsset(A.chocoItem, {left:'82%', top:itemTop, width:'8%'});
       }
       else if (s === 3) {
         showDialog('制作中...');
-        setTimeout(kitchenNext, 1000);
+        addAsset(A.egg, {left:'11%', top:itemTop, width:'8%'});
+        addAsset(A.milkItem, {left:'22%', top:itemTop, width:'6%'});
+        addAsset(A.bowl, {left:'31%', top:itemTop, width:'10%'});
+        addAsset(A.plate, {left:'44%', top:itemTop, width:'11%'});
+        addAsset(A.flourItem, {left:'58%', top:itemTop, width:'8%', opacity:'0.4'});
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
+        addAsset(A.chocoItem, {left:'82%', top:itemTop, width:'8%'});
+        setTimeout(kitchenNext, 1200);
       }
       else if (s === 4) {
-        showDialog(`非常好！蛋糕胚已经制作完成了\n下一步用鸡蛋和牛奶做出奶油吧`, true);
-        addCake(A.cakeBase, {left:'38%', top:'58%', width:'16%'});
+        showDialog(`非常好！蛋糕胚已经制作完成了\n下一步用鸡蛋和牛奶做出奶油吧`);
+        addAsset(A.egg, {left:'11%', top:itemTop, width:'8%'});
+        addAsset(A.milkItem, {left:'22%', top:itemTop, width:'6%'});
+        addAsset(A.bowl, {left:'31%', top:itemTop, width:'10%'});
+        addCake(A.cakeBase, {left:'42%', top:'50%', width:'15%'}); // 蛋糕胚生成在盘子位置
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
+        addAsset(A.chocoItem, {left:'82%', top:itemTop, width:'8%'});
+
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 5) {
-        showDialog('╰(〃>ᗜ<〃)╯');
-        addCake(A.cakeBase, {left:'38%', top:'58%', width:'16%'});
-        addAsset(A.egg, {left:'8%', top:'58%', width:'8%'}, () => showTip('鸡蛋已经准备好啦～'));
-        addAsset(A.bowl, {left:'19%', top:'58%', width:'10%'}, () => kitchenNext(), 'clickable-note');
-        addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, () => showTip('点击碗开始制作奶油～'));
+        showDialog('点击搅拌碗开始制作奶油～\n╰(〃>ᗜ<〃)╯');
+        addAsset(A.egg, {left:'11%', top:itemTop, width:'8%'}, () => showTip('鸡蛋已经准备好啦～'));
+        addAsset(A.milkItem, {left:'22%', top:itemTop, width:'6%'}, () => showTip('牛奶倒进碗里啦～'));
+        addAsset(A.bowl, {left:'31%', top:itemTop, width:'10%'}, () => kitchenNext(), 'clickable-note');
+        addCake(A.cakeBase, {left:'42%', top:'50%', width:'15%'});
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
+        addAsset(A.chocoItem, {left:'82%', top:itemTop, width:'8%'});
       }
       else if (s === 6) {
         showDialog(`嗯嗯！！\n再加点巧克力酱怎么样呢`);
-        addAsset(A.milkBowl, {left:'18%', top:'58%', width:'11%'});
-        addCake(A.cakeChoco, {left:'34%', top:'55%', width:'20%'});
-        addAsset(A.chocoItem, {left:'61%', top:'55%', width:'10%'}, () => kitchenNext(), 'clickable-note');
+        addAsset(A.milkBowl, {left:'30%', top:'57%', width:'11%'});
+        addCake(A.cakeChoco, {left:'41%', top:'46%', width:'17%'}); // 变为巧克力蛋糕
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
+        addAsset(A.chocoItem, {left:'82%', top:itemTop, width:'8%'}, () => kitchenNext(), 'clickable-note');
       }
       else if (s === 7) {
         showDialog('β(＾･ω･＾)✧');
-        addCake(A.cakeChoco, {left:'34%', top:'55%', width:'20%'});
+        addAsset(A.milkBowl, {left:'30%', top:'57%', width:'11%', opacity:'0.5'});
+        addCake(A.cakeChoco, {left:'41%', top:'46%', width:'17%'});
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'});
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 8) {
         showDialog(`有草莓点缀会更好看哟\n／ʚ・ω・ɞ／`);
-        addCake(A.cakeChoco, {left:'34%', top:'55%', width:'20%'});
-        addAsset(A.strawberryItem, {left:'59%', top:'56%', width:'9%'}, () => kitchenNext(), 'clickable-note');
+        addCake(A.cakeChoco, {left:'41%', top:'46%', width:'17%'});
+        addAsset(A.strawberryItem, {left:'70%', top:itemTop, width:'9%'}, () => kitchenNext(), 'clickable-note');
       }
       else if (s === 9) {
         showDialog('+♡(︶︶)✟');
-        addCake(A.cakeFinal, {left:'34%', top:'53%', width:'21%'});
+        addCake(A.cakeFinal, {left:'40%', top:'43%', width:'19%'}); // 最终草莓豪华蛋糕
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 10) {
-        showDialog(`太棒了 蛋糕做好了\n我想杨博文一定会喜欢的！\n快去送给他吧！◖⚆ᴥ⚆◗`, true);
-        addCake(A.cakeFinal, {left:'34%', top:'53%', width:'21%'});
+        showDialog(`太棒了 蛋糕做好了\n我想杨博文一定会喜欢的！\n快去送给他吧！◖⚆ᴥ⚆◗`);
+        addCake(A.cakeFinal, {left:'40%', top:'43%', width:'19%'});
         addBtn(A.btnSend, 'sendBtn', finalPage);
       }
     }
