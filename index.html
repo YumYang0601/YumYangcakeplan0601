@@ -426,8 +426,8 @@
       transition(() => {
         clearAll();
         setBg(A.kitchenBase);
-        showDialog('欢迎来到小羊厨房
-让我们一起做出美味蛋糕吧！！', true);
+        showDialog(`欢迎来到小羊厨房
+让我们一起做出美味蛋糕吧！！`, true);
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext, '继续');
       });
     }
@@ -443,8 +443,8 @@
       const s = state.kitchenStep;
 
       if (s === 1) {
-        showDialog('第一步
-先用面粉做出蛋糕胚吧', true);
+        showDialog(`第一步
+先用面粉做出蛋糕胚吧`, true);
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 2) {
@@ -457,8 +457,8 @@
         setTimeout(kitchenNext, 1000);
       }
       else if (s === 4) {
-        showDialog('非常好！蛋糕胚已经制作完成了
-下一步用鸡蛋和牛奶做出奶油吧', true);
+        showDialog(`非常好！蛋糕胚已经制作完成了
+下一步用鸡蛋和牛奶做出奶油吧`, true);
         addCake(A.cakeBase, {left:'38%', top:'58%', width:'16%'});
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
@@ -470,8 +470,8 @@
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, () => showTip('点击碗开始制作奶油～'));
       }
       else if (s === 6) {
-        showDialog('嗯嗯！！
-再加点巧克力酱怎么样呢');
+        showDialog(`嗯嗯！！
+再加点巧克力酱怎么样呢`);
         addAsset(A.milkBowl, {left:'18%', top:'58%', width:'11%'});
         addCake(A.cakeChoco, {left:'34%', top:'55%', width:'20%'});
         addAsset(A.chocoItem, {left:'61%', top:'55%', width:'10%'}, () => kitchenNext(), 'clickable-note');
@@ -482,8 +482,8 @@
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 8) {
-        showDialog('有草莓点缀会更好看哟
-／ʚ・ω・ɞ／');
+        showDialog(`有草莓点缀会更好看哟
+／ʚ・ω・ɞ／`);
         addCake(A.cakeChoco, {left:'34%', top:'55%', width:'20%'});
         addAsset(A.strawberryItem, {left:'59%', top:'56%', width:'9%'}, () => kitchenNext(), 'clickable-note');
       }
@@ -493,9 +493,9 @@
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, kitchenNext);
       }
       else if (s === 10) {
-        showDialog('太棒了 蛋糕做好了
+        showDialog(`太棒了 蛋糕做好了
 我想杨博文一定会喜欢的！
-快去送给他吧！◖⚆ᴥ⚆◗', true);
+快去送给他吧！◖⚆ᴥ⚆◗`, true);
         addCake(A.cakeFinal, {left:'34%', top:'53%', width:'21%'});
         addBtn(A.btnSend, 'sendBtn', finalPage);
       }
