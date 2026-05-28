@@ -5,657 +5,608 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>www.YumYangCakePlan0601.com｜蛋糕大作战</title>
   <style>
-    * { box-sizing: border-box; } [cite: 1]
+    * { box-sizing: border-box; }
     html, body {
-      margin: 0; [cite: 2]
-      width: 100%; [cite: 2]
-      height: 100%; [cite: 2]
-      overflow: hidden; [cite: 2]
-      background: #1b120b; [cite: 3]
-      font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif; [cite: 3]
-      user-select: none; [cite: 3]
-    } [cite: 4]
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1b120b;
+      font-family: "Microsoft YaHei", "SimHei", Arial, sans-serif;
+      user-select: none;
+    }
 
     #game {
-      width: 100vw; [cite: 4]
-      height: 100vh; [cite: 4]
-      position: relative; [cite: 4]
-      background: #1b120b; [cite: 4]
-      display: flex; [cite: 5]
-      align-items: center; [cite: 5]
-      justify-content: center; [cite: 5]
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      background: #1b120b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .screen {
-      width: min(100vw, 177.78vh); [cite: 5]
-      height: min(56.25vw, 100vh); [cite: 6]
-      aspect-ratio: 16 / 9; [cite: 6]
-      position: relative; [cite: 6]
-      overflow: hidden; [cite: 6]
-      background: #000; [cite: 6]
-      box-shadow: 0 0 40px rgba(0,0,0,.45); [cite: 6]
+      width: min(100vw, 177.78vh);
+      height: min(56.25vw, 100vh);
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 0 40px rgba(0,0,0,.45);
     }
 
     .bg {
-      position: absolute; [cite: 7]
-      inset: 0; [cite: 7]
-      width: 100%; [cite: 7]
-      height: 100%; [cite: 7]
-      object-fit: cover; [cite: 8]
-      opacity: 1; [cite: 8]
-      transition: opacity .45s ease; [cite: 8]
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 1;
+      transition: opacity .45s ease;
     }
 
-    .hidden { display: none !important; } [cite: 8]
+    .hidden { display: none !important; }
 
     .hotspot {
-      position: absolute; [cite: 9]
-      border: none; [cite: 9]
-      background: transparent; [cite: 9]
-      cursor: pointer; [cite: 9]
-      padding: 0; [cite: 10]
-      z-index: 10; [cite: 10]
+      position: absolute;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      z-index: 10;
     }
-    .hotspot:hover { filter: drop-shadow(0 0 10px #fff3a5); } [cite: 10]
+    .hotspot:hover { filter: drop-shadow(0 0 10px #fff3a5); }
     .hotspot:hover::after {
-      content: ""; [cite: 11]
-      position: absolute; [cite: 11]
-      inset: -6px; [cite: 11]
-      border: 3px dashed rgba(255, 242, 162, .9); [cite: 12]
-      border-radius: 14px; [cite: 12]
-      animation: blink .8s infinite alternate; [cite: 12]
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border: 3px dashed rgba(255, 242, 162, .9);
+      border-radius: 14px;
+      animation: blink .8s infinite alternate;
     }
 
-    @keyframes blink { from { opacity: .25; } to { opacity: 1; } } [cite: 13]
+    @keyframes blink { from { opacity: .25; } to { opacity: 1; } }
 
     .asset {
-      position: absolute; [cite: 14]
-      z-index: 18; [cite: 14]
-      object-fit: contain; [cite: 14]
-      cursor: pointer; [cite: 14]
-      transition: transform .2s ease, opacity .3s ease; [cite: 15]
-      filter: drop-shadow(0 8px 6px rgba(0,0,0,.2)); [cite: 15]
+      position: absolute;
+      z-index: 18;
+      object-fit: contain;
+      cursor: pointer;
+      transition: transform .2s ease, opacity .3s ease;
+      filter: drop-shadow(0 8px 6px rgba(0,0,0,.2));
     }
-    .asset:hover { transform: scale(1.07); } [cite: 15]
-    .used { opacity: 0; pointer-events: none; transform: scale(.55); } [cite: 16]
+    .asset:hover { transform: scale(1.07); }
 
-    /* 修复后的对话框样式：调大基准与文字适配度 */
+    /* 拓宽后的对话框样式，字绝不会飞出去 */
     .dialog {
-      position: absolute; 
-      left: 6%; 
-      bottom: 8%; 
-      width: 40%; /* 调大普通对话框宽度 */
-      min-height: 14%; /* 调高基础高度 */
-      z-index: 40; 
-      background-image: url("images/dialog.png"); 
-      background-size: 100% 100%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      padding: 2% 4%; /* 增大留白 */
-      color: #2b1609; 
-      font-size: clamp(14px, 1.6vw, 24px); /* 优化字号 */
-      line-height: 1.4; [cite: 19]
-      text-align: center; [cite: 19]
-      white-space: pre-line; [cite: 19]
-      text-shadow: 0 1px #fff6df; [cite: 19]
+      position: absolute;
+      left: 5%;
+      bottom: 6%;
+      width: 44%; 
+      min-height: 16%;
+      z-index: 40;
+      background-image: url("images/dialog.png");
+      background-size: 100% 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2% 4%;
+      color: #2b1609;
+      font-size: clamp(14px, 1.55vw, 24px);
+      line-height: 1.45;
+      text-align: center;
+      white-space: pre-line;
+      text-shadow: 0 1px #fff6df;
     }
 
-    /* 针对图中的全屏居中提示框进行了大幅度扩容 */
+    /* 欢迎居中框 */
     .center-dialog {
-      left: 22%; /* 重新居中 */
-      bottom: 42%; 
-      width: 56%; /* 显著加宽，防止文字挤出 */
-      min-height: 18%; /* 提高高度适配多行字 */
-      font-size: clamp(16px, 1.8vw, 26px); [cite: 21]
+      left: 20%;
+      bottom: 40%;
+      width: 60%;
+      min-height: 20%;
+      font-size: clamp(16px, 1.75vw, 26px);
       padding: 3% 5%;
     }
 
     .navBtn {
-      position: absolute; [cite: 21]
-      z-index: 999; /* 提升至最高层级，防止被热区遮挡 */
-      border: none; [cite: 22]
-      cursor: pointer; [cite: 22]
-      background: transparent; [cite: 22]
-      padding: 0; [cite: 22]
-      filter: drop-shadow(0 8px 7px rgba(0,0,0,.25)); [cite: 22]
-      transition: transform .2s ease; [cite: 22]
+      position: absolute;
+      z-index: 999; 
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      padding: 0;
+      filter: drop-shadow(0 8px 7px rgba(0,0,0,.25));
+      transition: transform .2s ease;
     }
-    .navBtn:hover { transform: scale(1.05); } [cite: 23]
-    .navBtn img { width: 100%; display: block; } [cite: 23]
+    .navBtn:hover { transform: scale(1.05); }
+    .navBtn img { width: 100%; display: block; }
 
-    .startBtn { width: 35%; left: 33%; bottom: 15%; animation: pulse 1.5s infinite; } [cite: 24]
+    .startBtn { width: 35%; left: 33%; bottom: 15%; animation: pulse 1.5s infinite; }
     @keyframes pulse {
-      0%,100% { transform: scale(1); } [cite: 25]
-      50% { transform: scale(1.04); } [cite: 26]
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
     }
 
-    .nextBtn { width: 22%; right: 5.5%; bottom: 4.5%; } [cite: 27]
-    .sendBtn { width: 22%; left: 54%; bottom: 16%; } [cite: 28]
+    .nextBtn { width: 22%; right: 5.5%; bottom: 4.5%; }
+    .sendBtn { width: 22%; left: 39%; bottom: 12%; } 
 
     .sparkle {
-      position: absolute; [cite: 29]
-      z-index: 80; [cite: 29]
-      pointer-events: none; [cite: 29]
-      font-size: clamp(18px, 2vw, 32px); [cite: 30]
-      animation: floatUp 1.2s forwards; [cite: 30]
+      position: absolute;
+      z-index: 80;
+      pointer-events: none;
+      font-size: clamp(18px, 2vw, 32px);
+      animation: floatUp 1.2s forwards;
     }
     @keyframes floatUp {
-      from { opacity: 1; transform: translateY(0) scale(.5); } [cite: 31]
-      to { opacity: 0; transform: translateY(-90px) scale(1.5); } [cite: 32]
+      from { opacity: 1; transform: translateY(0) scale(.5); }
+      to { opacity: 0; transform: translateY(-90px) scale(1.5); }
     }
 
     .cake {
-      position: absolute; [cite: 32]
-      z-index: 22; [cite: 32]
-      object-fit: contain; [cite: 33]
-      filter: drop-shadow(0 10px 8px rgba(0,0,0,.25)); [cite: 33]
-      animation: cakeIn .45s ease; [cite: 33]
+      position: absolute;
+      z-index: 22;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 8px rgba(0,0,0,.25));
+      animation: cakeIn .45s ease;
     }
     @keyframes cakeIn {
-      from { opacity: 0; transform: translateY(20px) scale(.75); } [cite: 34]
-      to { opacity: 1; transform: translateY(0) scale(1); } [cite: 35]
+      from { opacity: 0; transform: translateY(20px) scale(.75); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* 搅拌器的自动旋转动画 */
     @keyframes rotateWhisk {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(0, 0) rotate(360deg); }
     }
     .mixing {
-      animation: rotateWhisk 0.4s infinite linear !important;
+      animation: rotateWhisk 0.3s infinite linear !important;
     }
 
     .fadeCover {
-      position: absolute; [cite: 36]
-      inset: 0; [cite: 36]
-      background: #000; [cite: 37]
-      z-index: 100; [cite: 37]
-      pointer-events: none; [cite: 37]
-      opacity: 0; [cite: 37]
-      transition: opacity .45s ease; [cite: 37]
+      position: absolute;
+      inset: 0;
+      background: #000;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .45s ease;
     }
-    .fadeCover.on { opacity: .6; } [cite: 38]
+    .fadeCover.on { opacity: .6; }
 
     .tip {
-      position: absolute; [cite: 38]
-      left: 50%; [cite: 38]
-      top: 4%; [cite: 38]
-      transform: translateX(-50%); [cite: 38]
-      z-index: 70; [cite: 39]
-      background: rgba(255, 239, 199, .94); [cite: 39]
-      border: 4px solid #9d5a2b; [cite: 39]
-      border-radius: 12px; [cite: 39]
-      color: #3a1d0d; [cite: 39]
-      padding: .9% 2%; [cite: 39]
-      font-weight: 800; [cite: 39]
-      font-size: clamp(14px, 1.5vw, 25px); [cite: 40]
-      opacity: 0; [cite: 40]
-      pointer-events: none; [cite: 40]
-      transition: opacity .25s, transform .25s; [cite: 40]
+      position: absolute;
+      left: 50%;
+      top: 4%;
+      transform: translateX(-50%);
+      z-index: 70;
+      background: rgba(255, 239, 199, .94);
+      border: 4px solid #9d5a2b;
+      border-radius: 12px;
+      color: #3a1d0d;
+      padding: .9% 2%;
+      font-weight: 800;
+      font-size: clamp(14px, 1.5vw, 25px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
     }
-    .tip.show { opacity: 1; transform: translateX(-50%) translateY(8px); } [cite: 41]
+    .tip.show { opacity: 1; transform: translateX(-50%) translateY(8px); }
 
     .clickable-note {
-      animation: wiggle 1.2s infinite; [cite: 42]
+      animation: wiggle 1.2s infinite;
     }
     @keyframes wiggle {
-      0%,100% { transform: rotate(0deg); } [cite: 43]
-      25% { transform: rotate(-2deg); } [cite: 44]
-      75% { transform: rotate(2deg); } [cite: 44]
+      0%,100% { transform: rotate(0deg); }
+      25% { transform: rotate(-2deg); }
+      75% { transform: rotate(2deg); }
     }
 
     @media (max-width: 700px) {
-      .dialog { font-size: 12px; } [cite: 45]
+      .dialog { font-size: 12px; }
     }
   </style>
 </head>
 <body>
   <div id="game">
     <div class="screen" id="screen">
-      <img id="bg" class="bg" src="images/home.png" alt="game background" /> [cite: 46]
-      <div id="tip" class="tip">提示</div> [cite: 46]
-      <div id="dialog" class="dialog hidden"></div> [cite: 46]
-      <div id="layers"></div> [cite: 46]
-      <div id="buttons"></div> [cite: 46]
-      <div id="fade" class="fadeCover"></div> [cite: 46]
+      <img id="bg" class="bg" src="images/home.png" alt="game background" />
+      <div id="tip" class="tip">提示</div>
+      <div id="dialog" class="dialog hidden"></div>
+      <div id="layers"></div>
+      <div id="buttons"></div>
+      <div id="fade" class="fadeCover"></div>
     </div>
   </div>
 
   <script>
     const A = {
-      home: "images/home.png", [cite: 46]
-      map: "images/map.png", [cite: 46]
-      strawberry0: "images/strawberry-1.png", [cite: 47]
-      strawberry1: "images/strawberry-2.png", [cite: 47]
-      milk0: "images/milk-1.png", [cite: 47]
-      milk1: "images/milk-2.png", [cite: 47]
-      flour0: "images/flour-1.png", [cite: 47]
-      flour1: "images/flour-2.png", [cite: 47]
-      choco0: "images/choco-1.png", [cite: 47]
-      choco1: "images/choco-2.png", [cite: 47]
-      complete: "images/collected.png", [cite: 47]
-      kitchenBase: "images/kitchen.png", [cite: 47]
-      finalRoom: "images/final-room.png", [cite: 47]
-      startBtn: "images/start-button.png", [cite: 47]
-      btnSend1: "images/btn-send-1.png", [cite: 47]
-      btnSend2: "images/btn-send-2.png", [cite: 47]
-      btnSend3: "images/btn-send-3.png", [cite: 47, 48]
-      btnDone: "images/btn-done.png", [cite: 48]
-      btnSend: "images/btn-send.png", [cite: 48]
-      dialogBox: "images/dialog.png", [cite: 48]
-      gift: "images/gift.png", [cite: 48]
-      egg: "images/egg.png", [cite: 48]
-      bowl: "images/bowl.png", [cite: 48]
-      plate: "images/plate.png", [cite: 48]
-      strawberryItem: "images/strawberry.png", [cite: 48]
-      cakeBase: "images/cake-base.png", [cite: 48]
-      whisk: "images/whisk.png", [cite: 48]
-      milkItem: "images/milk.png", [cite: 48]
-      milkBowl: "images/milk-bowl.png", [cite: 48]
-      flourItem: "images/flour.png", [cite: 48]
-      chocoItem: "images/chocolate.png", [cite: 48]
-      creamBag: "images/cream-bag.png", [cite: 49]
-      creamCake: "images/cake-cream.png", [cite: 49]
-      cakeChoco: "images/cake-choco.png", [cite: 49]
-      cakeFinal: "images/cake-final.png", [cite: 49]
-      cakeHands: "images/cake-hands.png" [cite: 49]
+      home: "images/home.png",
+      map: "images/map.png",
+      strawberry0: "images/strawberry-1.png",
+      strawberry1: "images/strawberry-2.png",
+      milk0: "images/milk-1.png",
+      milk1: "images/milk-2.png",
+      flour0: "images/flour-1.png",
+      flour1: "images/flour-2.png",
+      choco0: "images/choco-1.png",
+      choco1: "images/choco-2.png",
+      complete: "images/collected.png",
+      kitchenBase: "images/kitchen.png",
+      finalRoom: "images/final-room.png",
+      startBtn: "images/start-button.png",
+      btnSend1: "images/btn-send-1.png",
+      btnSend2: "images/btn-send-2.png",
+      btnSend3: "images/btn-send-3.png",
+      btnDone: "images/btn-done.png",
+      btnSend: "images/btn-send.png",
+      dialogBox: "images/dialog.png",
+      gift: "images/gift.png",
+      egg: "images/egg.png",
+      bowl: "images/bowl.png",
+      plate: "images/plate.png",
+      strawberryItem: "images/strawberry.png",
+      cakeBase: "images/cake-base.png",
+      whisk: "images/whisk.png",
+      milkItem: "images/milk.png",
+      milkBowl: "images/milk-bowl.png",
+      flourItem: "images/flour.png",
+      chocoItem: "images/chocolate.png",
+      creamBag: "images/cream-bag.png",
+      creamCake: "images/cake-cream.png",
+      cakeChoco: "images/cake-choco.png",
+      cakeFinal: "images/cake-final.png",
+      cakeHands: "images/cake-hands.png"
     };
 
-    // 增加了顺序控制变量 orderStage
     const state = {
-      items: { strawberry:false, milk:false, flour:false, choco:false }, [cite: 50]
-      orderStage: 0, // 0:草莓, 1:牛奶, 2:面粉, 3:巧克力, 4:全收集
+      items: { strawberry:false, milk:false, flour:false, choco:false },
       kitchenStep: 0
     };
 
-    const bg = document.getElementById('bg'); [cite: 51]
-    const layers = document.getElementById('layers'); [cite: 51]
-    const buttons = document.getElementById('buttons'); [cite: 51]
-    const dialog = document.getElementById('dialog'); [cite: 51]
-    const fade = document.getElementById('fade'); [cite: 51]
-    const tip = document.getElementById('tip'); [cite: 52]
-    const screen = document.getElementById('screen'); [cite: 52]
+    const bg = document.getElementById('bg');
+    const layers = document.getElementById('layers');
+    const buttons = document.getElementById('buttons');
+    const dialog = document.getElementById('dialog');
+    const fade = document.getElementById('fade');
+    const tip = document.getElementById('tip');
+    const screen = document.getElementById('screen');
 
     function clearAll() {
-      layers.innerHTML = ''; [cite: 52]
-      buttons.innerHTML = ''; [cite: 53]
-      dialog.className = 'dialog hidden'; [cite: 53]
-      dialog.textContent = ''; [cite: 53]
+      layers.innerHTML = '';
+      buttons.innerHTML = '';
+      dialog.className = 'dialog hidden';
+      dialog.textContent = '';
     }
 
-    function setBg(src) { bg.src = src; } [cite: 53]
+    function setBg(src) { bg.src = src; }
 
     function transition(fn) {
-      fade.classList.add('on'); [cite: 54]
-      setTimeout(() => { fn(); fade.classList.remove('on'); sparkleBurst(); }, 260); [cite: 55]
+      fade.classList.add('on');
+      setTimeout(() => { fn(); fade.classList.remove('on'); sparkleBurst(); }, 260);
     }
 
     function showTip(text) {
-      tip.textContent = text; [cite: 55]
-      tip.classList.add('show'); [cite: 56]
-      setTimeout(() => tip.classList.remove('show'), 1200); [cite: 56]
+      tip.textContent = text;
+      tip.classList.add('show');
+      setTimeout(() => tip.classList.remove('show'), 1200);
     }
 
     function showDialog(text, center=false) {
-      dialog.textContent = text; [cite: 56]
-      dialog.className = center ? 'dialog center-dialog' : 'dialog'; [cite: 57]
+      dialog.textContent = text;
+      dialog.className = center ? 'dialog center-dialog' : 'dialog';
     }
 
     function addBtn(img, cls, onClick) {
-      const b = document.createElement('button'); [cite: 57]
-      b.className = 'navBtn ' + cls; [cite: 58]
-      b.innerHTML = `<img src="${img}" alt="button">`; [cite: 58]
-      b.onclick = onClick; [cite: 58]
-      buttons.appendChild(b); [cite: 58]
-      return b; [cite: 58]
+      const b = document.createElement('button');
+      b.className = 'navBtn ' + cls;
+      b.innerHTML = `<img src="${img}" alt="button">`;
+      b.onclick = onClick;
+      buttons.appendChild(b);
+      return b;
     }
 
     function addHotspot(style, onClick, label='') {
-      const h = document.createElement('button'); [cite: 59]
-      h.className = 'hotspot'; [cite: 60]
-      h.setAttribute('aria-label', label); [cite: 60]
-      Object.assign(h.style, style); [cite: 60]
-      h.onclick = onClick; [cite: 60]
-      layers.appendChild(h); [cite: 61]
-      return h; [cite: 61]
+      const h = document.createElement('button');
+      h.className = 'hotspot';
+      h.setAttribute('aria-label', label);
+      Object.assign(h.style, style);
+      h.onclick = onClick;
+      layers.appendChild(h);
+      return h;
     }
 
     function addAsset(src, style, onClick, cls='') {
-      const img = document.createElement('img'); [cite: 61]
-      img.className = 'asset ' + cls; [cite: 62]
-      img.src = src; [cite: 62]
-      Object.assign(img.style, style); [cite: 62]
-      if (onClick) img.onclick = onClick; [cite: 62]
-      layers.appendChild(img); [cite: 63]
-      return img; [cite: 63]
+      const img = document.createElement('img');
+      img.className = 'asset ' + cls;
+      img.src = src;
+      Object.assign(img.style, style);
+      if (onClick) img.onclick = onClick;
+      layers.appendChild(img);
+      return img;
     }
 
     function addCake(src, style) {
-      const img = document.createElement('img'); [cite: 63]
-      img.className = 'cake'; [cite: 63]
-      img.src = src; [cite: 64]
-      Object.assign(img.style, style); [cite: 64]
-      layers.appendChild(img); [cite: 64]
-      return img; [cite: 64]
+      const img = document.createElement('img');
+      img.className = 'cake';
+      img.src = src;
+      Object.assign(img.style, style);
+      layers.appendChild(img);
+      return img;
     }
 
     function sparkleBurst() {
       for (let i = 0; i < 16; i++) {
-        const s = document.createElement('div'); [cite: 64]
-        s.className = 'sparkle'; [cite: 65]
-        s.textContent = ['✨','💗','⭐','🎀','🍓'][Math.floor(Math.random()*5)]; [cite: 65]
-        s.style.left = Math.random()*100 + '%'; [cite: 65]
-        s.style.top = (20 + Math.random()*55) + '%'; [cite: 65]
-        screen.appendChild(s); [cite: 65]
-        setTimeout(() => s.remove(), 1300); [cite: 66]
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.textContent = ['✨','💗','⭐','🎀','🍓'][Math.floor(Math.random()*5)];
+        s.style.left = Math.random()*100 + '%';
+        s.style.top = (20 + Math.random()*55) + '%';
+        screen.appendChild(s);
+        setTimeout(() => s.remove(), 1300);
       }
     }
 
     function home() {
       transition(() => {
-        clearAll(); [cite: 66]
-        setBg(A.home); [cite: 66]
-        addBtn(A.startBtn, 'startBtn', map); [cite: 66]
-      }); [cite: 67]
+        clearAll();
+        setBg(A.home);
+        addBtn(A.startBtn, 'startBtn', map);
+      });
     }
 
-    // 核心流控制：严格限制玩家必须按照指定顺序收集
+    // 地图：有且只有草莓森林可以点击，其他地方不配置热区，点击无响应
     function map() {
       transition(() => {
-        clearAll(); [cite: 67]
-        setBg(A.map); [cite: 67]
+        clearAll();
+        setBg(A.map);
         
-        // 1. 草莓森林
+        // 唯独可点击的【草莓森林】热区
         addHotspot({left:'30%', top:'20%', width:'19%', height:'22%'}, () => {
-          if(state.orderStage === 0) collect('strawberry');
-          else if(state.orderStage > 0) showTip('草莓已经收集好啦！');
-          else showTip('按照顺序，现在还不能去这里哦～');
+          collect('strawberry');
         }, '草莓森林');
-
-        // 2. 牛奶牧场
-        addHotspot({left:'64%', top:'18%', width:'20%', height:'24%'}, () => {
-          if(state.orderStage === 1) collect('milk');
-          else if(state.orderStage > 1) showTip('牛奶已经收集好啦！');
-          else showTip('请先去【草莓森林】收集草莓哦！');
-        }, '牛奶牧场');
-
-        // 3. 面粉小镇
-        addHotspot({left:'12%', top:'57%', width:'20%', height:'23%'}, () => {
-          if(state.orderStage === 2) collect('flour');
-          else if(state.orderStage > 2) showTip('面粉已经收集好啦！');
-          else showTip('请按照顺序，先去【牛奶牧场】吧！');
-        }, '面粉小镇');
-
-        // 4. 巧克力山洞
-        addHotspot({left:'35%', top:'55%', width:'21%', height:'25%'}, () => {
-          if(state.orderStage === 3) collect('choco');
-          else if(state.orderStage > 3) showTip('巧克力已经收集好啦！');
-          else showTip('请按照顺序，先去【面粉小镇】吧！');
-        }, '巧克力山洞');
- 
-        // 5. 制作蛋糕入口
-        addHotspot({left:'58%', top:'54%', width:'22%', height:'22%'}, () => {
-          if (state.orderStage >= 4) collectedComplete(); [cite: 68]
-          else showTip('还没有按顺序收集完所有材料哦～'); [cite: 68]
-        }, '制作蛋糕');
-      }); [cite: 69]
+      });
     }
 
+    // 直线全自动剧情流：草莓 -> 牛奶 -> 面粉 -> 巧克力 -> 全收集提示 -> 厨房
     function collect(type) {
       const data = {
         strawberry: {
-          empty:A.strawberry0, done:A.strawberry1, next:A.btnSend1, nextFn:() => { state.orderStage = 1; map(); },
+          empty:A.strawberry0, done:A.strawberry1, next:A.btnSend1, nextFn:() => collect('milk'),
           click:{left:'42%', top:'45%', width:'10%', height:'13%'},
           msg:'草莓找到啦！酸酸甜甜，刚好适合今天的快乐。'
         },
         milk: {
-          empty:A.milk0, done:A.milk1, next:A.btnSend2, nextFn:() => { state.orderStage = 2; map(); },
+          empty:A.milk0, done:A.milk1, next:A.btnSend2, nextFn:() => collect('flour'),
           click:{left:'13%', top:'58%', width:'10%', height:'16%'},
           msg:'牛奶找到啦！今天奶牛们心情特别好～'
         },
         flour: {
-          empty:A.flour0, done:A.flour1, next:A.btnSend3, nextFn:() => { state.orderStage = 3; map(); },
+          empty:A.flour0, done:A.flour1, next:A.btnSend3, nextFn:() => collect('choco'),
           click:{left:'75%', top:'62%', width:'12%', height:'16%'},
           msg:'面粉找到啦！闻到了吗？是小麦的香气～'
         },
         choco: {
-          empty:A.choco0, done:A.choco1, next:A.btnDone, nextFn:() => { state.orderStage = 4; collectedComplete(); },
+          empty:A.choco0, done:A.choco1, next:A.btnDone, nextFn:() => collectedComplete(),
           click:{left:'13%', top:'60%', width:'14%', height:'20%'},
-          msg:'巧克力找到啦！浓域一点，像偷偷加倍的喜欢。'
+          msg:'巧克力找到啦！浓郁一点，像偷偷加倍的喜欢。'
         }
       }[type];
 
       transition(() => {
-        clearAll(); [cite: 72]
-        setBg(state.items[type] ? data.done : data.empty); [cite: 72]
+        clearAll();
+        setBg(state.items[type] ? data.done : data.empty);
         addHotspot(data.click, () => {
           if (state.items[type]) return;
           state.items[type] = true;
-          setBg(data.done); [cite: 72]
-          showTip(data.msg); [cite: 72]
-          sparkleBurst(); [cite: 72]
-          addBtn(data.next, 'nextBtn', data.nextFn); [cite: 73]
+          setBg(data.done);
+          showTip(data.msg);
+          sparkleBurst();
+          addBtn(data.next, 'nextBtn', data.nextFn);
         }, type);
-        if (state.items[type]) addBtn(data.next, 'nextBtn', data.nextFn); [cite: 73]
-      }); [cite: 74]
+        if (state.items[type]) addBtn(data.next, 'nextBtn', data.nextFn);
+      });
     }
 
     function collectedComplete() {
       transition(() => {
-        clearAll(); [cite: 75]
-        setBg(A.complete); [cite: 75]
-        addHotspot({left:'0', top:'0', width:'100%', height:'100%'}, kitchenIntro, '开始制作蛋糕'); [cite: 75]
-      }); [cite: 76]
+        clearAll();
+        setBg(A.complete);
+        addHotspot({left:'0', top:'0', width:'100%', height:'100%'}, kitchenIntro, '开始制作蛋糕');
+      });
     }
 
     function kitchenIntro() {
-      state.kitchenStep = 1; // 直接进入厨房第一步
+      state.kitchenStep = 1; 
       renderKitchen();
     }
 
-    // 新增：追踪厨房里鸡蛋和牛奶被点击的状态
-    let eggClicked = false;
-    let milkClicked = false;
+    let eggAdded = false;
+    let milkAdded = false;
 
     function renderKitchen() {
-      clearAll(); [cite: 79]
-      setBg(A.kitchenBase); [cite: 79]
+      clearAll();
       const s = state.kitchenStep;
 
-      // ==========================================
-      // 步骤 1：欢迎语与提示
-      // ==========================================
+      // 步骤 1：欢迎框
       if (s === 1) {
-        showDialog(`欢迎来到小羊厨房\n让我们一起做出美味蛋糕吧！！\n\n(点击任意地方开始第一步：制作蛋糕胚)`, true); [cite: 77]
+        setBg(A.kitchenBase); 
+        showDialog(`欢迎来到小羊厨房\n让我们一起做出美味蛋糕吧！！\n\n(点击屏幕任意地方开始制作蛋糕胚)`, true);
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, () => {
           state.kitchenStep = 2;
           renderKitchen();
         });
       }
       
-      // ==========================================
-      // 步骤 2：全食材摆上桌，点击面粉
-      // ==========================================
+      // 步骤 2：全食材上桌，等待点面粉
       else if (s === 2) {
-        showDialog('第一步：请点击【面粉】撒在盘子里制作蛋糕胚。');
+        setBg(A.kitchenBase);
+        showDialog('第一步：请点击【面粉】撒在右侧的盘子里。');
         
-        // 摆放所有静态食材（未激活的暂时做背景）
-        addAsset(A.egg, {left:'10%', top:'62%', width:'7%', opacity:'0.6'});
-        addAsset(A.milkItem, {left:'20%', top:'58%', width:'7%', opacity:'0.6'});
-        addAsset(A.chocoItem, {left:'72%', top:'60%', width:'9%', opacity:'0.6'});
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%', opacity:'0.6'});
-        addAsset(A.bowl, {left:'32%', top:'60%', width:'11%'}); // 搅拌碗
-        addAsset(A.plate, {left:'52%', top:'62%', width:'13%'}); // 空盘子
+        addAsset(A.egg, {left:'8%', top:'60%', width:'7%', opacity:'0.5'});
+        addAsset(A.milkItem, {left:'18%', top:'56%', width:'7%', opacity:'0.5'});
+        addAsset(A.chocoItem, {left:'70%', top:'58%', width:'9%', opacity:'0.5'});
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%', opacity:'0.5'});
+        addAsset(A.bowl, {left:'30%', top:'58%', width:'11%'}); 
+        addAsset(A.plate, {left:'52%', top:'60%', width:'13%'}); 
 
-        // 唯一可点击的面粉
-        addAsset(A.flourItem, {left:'62%', top:'56%', width:'8%'}, () => {
-          showTip('沙沙沙...面粉倒出来了！');
+        addAsset(A.flourItem, {left:'60%', top:'54%', width:'8%'}, () => {
+          showTip('沙沙沙...面粉平铺完毕！');
           sparkleBurst();
           state.kitchenStep = 3;
-          setTimeout(renderKitchen, 1000);
+          setTimeout(renderKitchen, 1100);
         }, 'clickable-note');
       }
 
-      // ==========================================
-      // 步骤 3：面粉倒完，出现蛋糕胚
-      // ==========================================
+      // 步骤 3：蛋糕胚出现
       else if (s === 3) {
-        showDialog('哇！蛋糕胚制作完成了。接下来制作奶油！');
+        setBg(A.kitchenBase);
+        showDialog('哇！蛋糕胚定型成功！接下来我们制作奶油部分。\n(点击屏幕任意地方继续)');
         
-        // 保留其他食材
-        addAsset(A.egg, {left:'10%', top:'62%', width:'7%'});
-        addAsset(A.milkItem, {left:'20%', top:'58%', width:'7%'});
-        addAsset(A.chocoItem, {left:'72%', top:'60%', width:'9%', opacity:'0.6'});
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%', opacity:'0.6'});
-        addAsset(A.bowl, {left:'32%', top:'60%', width:'11%'});
-        
-        // 盘子上长出了蛋糕胚
-        addCake(A.cakeBase, {left:'51%', top:'53%', width:'15%'});
+        addAsset(A.egg, {left:'8%', top:'60%', width:'7%'});
+        addAsset(A.milkItem, {left:'18%', top:'56%', width:'7%'});
+        addAsset(A.chocoItem, {left:'70%', top:'58%', width:'9%', opacity:'0.5'});
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%', opacity:'0.5'});
+        addAsset(A.bowl, {left:'30%', top:'58%', width:'11%'});
+        addCake(A.cakeBase, {left:'51%', top:'51%', width:'15%'});
 
-        // 全屏热区引导去下一步
         addHotspot({left:'0',top:'0',width:'100%',height:'100%'}, () => {
-          eggClicked = false;
-          milkClicked = false;
           state.kitchenStep = 4;
           renderKitchen();
         });
       }
 
-      // ==========================================
-      // 步骤 4：点击鸡蛋和牛奶加入碗中
-      // ==========================================
+      // 步骤 4：分别点鸡蛋、牛奶倒碗里
       else if (s === 4) {
-        showDialog('第二步：点击【鸡蛋】和【牛奶】把它们加入左边的搅拌碗里。');
+        setBg(A.kitchenBase);
+        showDialog('第二步：分别点击【鸡蛋】和【牛奶】加入搅拌碗。');
         
-        addAsset(A.chocoItem, {left:'72%', top:'60%', width:'9%', opacity:'0.6'});
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%', opacity:'0.6'});
-        addAsset(A.bowl, {left:'32%', top:'60%', width:'11%'});
-        addCake(A.cakeBase, {left:'51%', top:'53%', width:'15%'});
-
-        // 鸡蛋交互
-        if (!eggClicked) {
-          addAsset(A.egg, {left:'10%', top:'62%', width:'7%'}, () => {
-            eggClicked = true;
-            showTip('咔嚓！加入一个新鲜鸡蛋！');
-            checkEggMilkStatus();
-          }, 'clickable-note');
-        }
-        // 牛奶交互
-        if (!milkClicked) {
-          addAsset(A.milkItem, {left:'20%', top:'58%', width:'7%'}, () => {
-            milkClicked = true;
-            showTip('哗啦啦...浓郁的牛奶倒进去啦！');
-            checkEggMilkStatus();
-          }, 'clickable-note');
+        addAsset(A.chocoItem, {left:'70%', top:'58%', width:'9%', opacity:'0.5'});
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%', opacity:'0.5'});
+        addCake(A.cakeBase, {left:'51%', top:'51%', width:'15%'});
+        
+        if (eggAdded && milkAdded) {
+          addAsset(A.milkBowl, {left:'30%', top:'58%', width:'11%'});
+        } else {
+          addAsset(A.bowl, {left:'30%', top:'58%', width:'11%'});
         }
 
-        function checkEggMilkStatus() {
+        if (!eggAdded) {
+          addAsset(A.egg, {left:'8%', top:'60%', width:'7%'}, () => {
+            eggAdded = true;
+            showTip('咔嚓！一个鸡蛋加进去了！');
+            checkIngredients();
+          }, 'clickable-note');
+        }
+        if (!milkAdded) {
+          addAsset(A.milkItem, {left:'18%', top:'56%', width:'7%'}, () => {
+            milkAdded = true;
+            showTip('哗啦啦——香甜的牛奶倒进去了！');
+            checkIngredients();
+          }, 'clickable-note');
+        }
+
+        function checkIngredients() {
           renderKitchen();
-          if (eggClicked && milkClicked) {
+          if (eggAdded && milkAdded) {
             setTimeout(() => {
               state.kitchenStep = 5;
               renderKitchen();
-            }, 1000);
+            }, 1200);
           }
         }
       }
 
-      // ==========================================
-      // 步骤 5：搅拌器小游戏（点击自动触发旋转动画）
-      // ==========================================
+      // 步骤 5：点击搅拌器播放旋转打发动画
       else if (s === 5) {
-        showDialog('材料加齐了！点击【搅拌器】给奶油快速定型！');
+        setBg(A.kitchenBase);
+        showDialog('材料配齐啦！快点击【搅拌器】给奶油快速打发打匀！');
         
-        addAsset(A.chocoItem, {left:'72%', top:'60%', width:'9%', opacity:'0.6'});
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%', opacity:'0.6'});
-        addAsset(A.milkBowl, {left:'32%', top:'60%', width:'11%'}); // 变成装了材料的碗
-        addCake(A.cakeBase, {left:'51%', top:'53%', width:'15%'});
+        addAsset(A.chocoItem, {left:'70%', top:'58%', width:'9%', opacity:'0.5'});
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%', opacity:'0.5'});
+        addAsset(A.milkBowl, {left:'30%', top:'58%', width:'11%'});
+        addCake(A.cakeBase, {left:'51%', top:'51%', width:'15%'});
 
-        // 放置可交互的搅拌器
-        const whiskEl = addAsset(A.whisk, {left:'37%', top:'50%', width:'6%', transformOrigin:'center center'}, () => {
-          whiskEl.classList.add('mixing'); // 激活CSS高频转动动画
-          showTip('正在高速搅拌中...✧( ु•⌄• )');
+        const whiskObj = addAsset(A.whisk, {left:'32%', top:'46%', width:'6%', transformOrigin:'center center'}, () => {
+          whiskObj.classList.add('mixing'); 
+          showTip('正在高速搅拌中...✨');
           setTimeout(() => {
             state.kitchenStep = 6;
             renderKitchen();
-          }, 1500);
+          }, 1600);
         }, 'clickable-note');
       }
 
-      // ==========================================
-      // 步骤 6：奶油完成，变成奶油裱花袋
-      // ==========================================
+      // 步骤 6：奶油好啦，点击出现的裱花袋
       else if (s === 6) {
-        showDialog('奶油打好了！点击【奶油裱花袋】涂抹到蛋糕胚上。');
+        setBg(A.kitchenBase);
+        showDialog('细腻的奶油打好了！点击出现的【奶油裱花袋】给蛋糕胚抹平。');
         
-        addAsset(A.chocoItem, {left:'72%', top:'60%', width:'9%', opacity:'0.6'});
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%', opacity:'0.6'});
-        addCake(A.cakeBase, {left:'51%', top:'53%', width:'15%'});
+        addAsset(A.chocoItem, {left:'70%', top:'58%', width:'9%', opacity:'0.5'});
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%', opacity:'0.5'});
+        addCake(A.cakeBase, {left:'51%', top:'51%', width:'15%'});
 
-        // 裱花袋出现
-        addAsset(A.creamBag, {left:'34%', top:'52%', width:'10%'}, () => {
-          showTip('滋溜——奶油铺得平平整整！');
+        addAsset(A.creamBag, {left:'31%', top:'48%', width:'9%'}, () => {
+          showTip('丝滑的奶油全面覆盖～');
           sparkleBurst();
           state.kitchenStep = 7;
           setTimeout(renderKitchen, 1200);
         }, 'clickable-note');
       }
 
-      // ==========================================
-      // 步骤 7：奶油蛋糕出现，要求点击巧克力
-      // ==========================================
+      // 步骤 7：奶油蛋糕好了，点击巧克力淋酱
       else if (s === 7) {
-        showDialog('第三步：点击【巧克力】，淋上甜甜的巧克力酱！');
+        setBg(A.kitchenBase);
+        showDialog('第三步：点击【巧克力】，让浓郁的巧克力酱淋满整层！');
         
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%', opacity:'0.6'});
-        addCake(A.creamCake, {left:'50%', top:'50%', width:'17%'}); // 此时进化成奶油蛋糕
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%', opacity:'0.5'});
+        addCake(A.creamCake, {left:'50%', top:'48%', width:'17%'}); 
 
-        addAsset(A.chocoItem, {left:'72%', top:'60%', width:'9%'}, () => {
-          showTip('浓郁的巧克力酱淋上去啦！❤');
+        addAsset(A.chocoItem, {left:'70%', top:'58%', width:'9%'}, () => {
+          showTip('香浓巧克力倾注而下！❤❤');
           sparkleBurst();
           state.kitchenStep = 8;
           setTimeout(renderKitchen, 1200);
         }, 'clickable-note');
       }
 
-      // ==========================================
-      // 步骤 8：巧克力蛋糕出现，要求点击草莓
-      // ==========================================
+      // 步骤 8：巧克力蛋糕好了，点击草莓点缀
       else if (s === 8) {
-        showDialog('最后一步：点击【草莓】，进行完美的终极点缀！');
+        setBg(A.kitchenBase);
+        showDialog('最后一步：点击【草莓】，放上新鲜草莓完成梦幻收尾吧！');
         
-        addCake(A.cakeChoco, {left:'50%', top:'50%', width:'17%'}); // 此时进化成巧克力蛋糕
+        addCake(A.cakeChoco, {left:'50%', top:'48%', width:'17%'}); 
 
-        addAsset(A.strawberryItem, {left:'84%', top:'61%', width:'8%'}, () => {
-          showTip('漂亮的草莓放好啦！大功告成！');
+        addAsset(A.strawberryItem, {left:'82%', top:'58%', width:'8%'}, () => {
+          showTip('完美的草莓放好啦！大功告成！');
           sparkleBurst();
           state.kitchenStep = 9;
           setTimeout(renderKitchen, 1000);
         }, 'clickable-note');
       }
 
-      // ==========================================
-      // 步骤 9：最终版蛋糕完成，展示送出按钮
-      // ==========================================
+      // 步骤 9：豪华蛋糕大功告成，显示送出按钮
       else if (s === 9) {
-        showDialog(`太棒了！豪华生日蛋糕做好了！\n我想博文一定会超级喜欢的！\n快去送给他吧！◖⚆ᴥ⚆◗`, true);
-        addCake(A.cakeFinal, {left:'48%', top:'46%', width:'20%'}); // 完美最终状态
-        addBtn(A.btnSend, 'sendBtn', finalPage); [cite: 94]
+        setBg(A.kitchenBase);
+        showDialog(`太棒了 豪华生日蛋糕做好了\n我想杨博文一定会超级喜欢的！\n快去送给他吧！◖⚆ᴥ⚆◗`, true);
+        addCake(A.cakeFinal, {left:'49%', top:'44%', width:'19%'});
+        addBtn(A.btnSend, 'sendBtn', finalPage); 
       }
     }
 
+    // 最终生日房间
     function finalPage() {
       transition(() => {
-        clearAll(); [cite: 94]
-        setBg(A.finalRoom); [cite: 94]
-        addCake(A.cakeHands, {left:'22%', top:'47%', width:'56%'}); [cite: 94]
-        showTip('生日快乐！'); [cite: 94]
-        setTimeout(sparkleBurst, 500); [cite: 95]
+        clearAll();
+        setBg(A.finalRoom); 
+        addCake(A.cakeHands, {left:'22%', top:'47%', width:'56%'});
+        showTip('生日快乐！');
+        setTimeout(sparkleBurst, 500);
       });
     }
 
-    home(); [cite: 95]
+    home();
   </script>
 </body>
 </html>
